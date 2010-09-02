@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$1" == "config" ]; then
+cat <<_FOO_
+graph_title Running terminals
+graph_category funkytown
+urxvt.label Number of URXVT terminals
+urxvt.type GAUGE
+_FOO_
+exit 0;
+fi
+
+echo -n 'urxvt.value '
+pgrep urxvt | wc -l

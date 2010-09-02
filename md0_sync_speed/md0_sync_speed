@@ -1,0 +1,23 @@
+#!/bin/sh
+
+targets="md0"
+
+if [ "x$1" = "xconfig" ]; then
+	cat << __EOF__
+graph_title SW-raid resync speed
+graph_args -l 0 --base 1024
+graph_info Display speed of Linux softwareraid resync
+graph_category disk
+graph_vlabel kbyte/s
+__EOF__
+	for target in $targets; do
+		echo "$target.label $target"
+		echo "$target.cdef $target,1024,*"
+	done
+	exit
+fi
+
+for target in $targets; do
+	echo -n "$target.value "
+	cat /sys/devices/virtual/block/$target/md/sync_speed
+done

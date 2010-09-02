@@ -1,0 +1,22 @@
+
+#!/bin/sh
+
+targets="md0"
+
+if [ "x$1" = "xconfig" ]; then
+	cat << __EOF__
+graph_title SW-raid resync progress
+graph_args -l 0
+graph_info Display progress of Linux softwareraid resync
+graph_category disk
+graph_vlabel Percentage
+__EOF__
+	for target in $targets; do
+		echo "$target.label $target"
+	done
+	exit
+fi
+
+for target in $targets; do
+	cat /sys/devices/virtual/block/$target/md/sync_completed | awk -v tar=$target '{print tar ".value " 100*$1/$3}'
+done

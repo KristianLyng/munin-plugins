@@ -1,0 +1,22 @@
+#!/bin/sh
+
+targets="sg2 sg3 sg4 sg5 sg6"
+
+if [ "x$1" = "xconfig" ]; then
+	cat << __EOF__
+graph_title Background media scan
+graph_args -l 0
+graph_info Display progress of a background media scan on a SAS disk
+graph_category disk
+graph_vlabel Percentage
+__EOF__
+	for target in $targets; do
+		echo "$target.label $target"
+	done
+	exit
+fi
+ 
+for target in $targets; do
+	echo -n "$target.value "
+	sg_logs -p 0x15 /dev/$target  | grep "Background medium scan progress" | awk '{print $NF}' | sed 's/%//'
+done

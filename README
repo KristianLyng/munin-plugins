@@ -1,1 +1,18 @@
-This repository contains my custom munin-plugins.
+This repository contains custom munin-plugins.
+
+Decent or better quality:
+
+proc_ - Monitor a process
+munin_plugins - Count how many plugins are linked up
+
+
+Read first-quality:
+
+df_abs - Slight modifications to the original, including a "Total Capacity"
+md0_sync - Sync/recover progress of a md0
+md0_sync_speed - Sync/recover SPEED of a md0
+scsi_media_scan - Display scsi media scan progress
+scsi_temp - Fetch temperature with sg_logs (a bit redundant)
+terminals - Count terminals running (pointless fun)
+vgs - Display free space on LVM volume groups
+vgs_used - Display used space on LVM volume groups

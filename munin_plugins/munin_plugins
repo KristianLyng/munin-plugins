@@ -1,0 +1,35 @@
+#!/bin/bash
+# Author: Kristian Lyngstøl <kristian@bohemians.org>
+#
+#%# family=manual
+#%# capabilities=autoconf
+
+if [ "x$1" = "xautoconf" ]; then
+	if [ -z "${MUNIN_CONFDIR}" ]; then
+		echo "no (MUNIN_CONFDIR variable empty)";
+		exit 1;
+	elif [ ! -d "${MUNIN_CONFDIR}/plugins" ]; then
+		echo "no (${MUNIN_CONFDIR}/plugins not a directory)";
+		exit 1;
+	elif [ ! -r "${MUNIN_CONFDIR}/plugins" ]; then
+		echo "no (${MUNIN_CONFDIR}/plugins not readable)";
+		exit 1;
+	else
+		echo "yes"
+		exit 0;
+	fi
+fi
+if [ "x$1" = "xconfig" ]; then
+	echo 'graph_title Number of munin plugins'
+	echo "graph_args --lower-limit 0"
+
+	echo 'graph_vlabel plugins'
+	echo 'graph_category funkytown'
+
+	echo "num_plugins.label Number of plugins"
+	exit 0
+fi
+
+cd ${MUNIN_CONFDIR}/plugins
+echo -n "num_plugins.value "
+ls -1 . | wc -l
