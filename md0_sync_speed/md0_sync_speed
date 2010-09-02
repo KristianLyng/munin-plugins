@@ -1,10 +1,46 @@
 #!/bin/sh
+# Detect and display Linux sw-raid sync speed
+# Copyright (C) 2010 Kristian Lyngstøl <kristian@bohemians.org>
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#####
+# 
+# Magic Markers:
+# #%# family=auto
+# #%# capabilities=autoconf
 
-targets="md0"
+# Hopefully, the sysfs paths are generic? Suggestions are welcome.
+targets=`ls /sys/devices/virtual/block/*/md/sync_completed | cut -d/ -f6`
+returnval=$?
+
+if [ "x$1" = "xautoconf" ]; then
+	if [ -z "$targets" ]; then
+		echo "no (no md devices found under /sys/devices/virtual/block/*/md/sync_completed)"
+		exit 1;
+	elif [ "x$returnval" != "x0" ]; then
+		echo "no (discovery of md devices failed strangely)"
+		exit 1;
+	else
+		echo "yes"
+		exit 0
+	fi
+fi
 
 if [ "x$1" = "xconfig" ]; then
 	cat << __EOF__
-graph_title SW-raid resync speed
+graph_title Software-raid resync speed
 graph_args -l 0 --base 1024
 graph_info Display speed of Linux softwareraid resync
 graph_category disk
@@ -18,6 +54,9 @@ __EOF__
 fi
 
 for target in $targets; do
+	# This will show "none" when it's not running. We could make a
+	# special case for it, or just let munin say N/A which is sort of
+	# true.
 	echo -n "$target.value "
 	cat /sys/devices/virtual/block/$target/md/sync_speed
 done
