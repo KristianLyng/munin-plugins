@@ -1,13 +1,13 @@
 This repository contains custom munin-plugins.
 
-Decent or better quality:
+"Decent" or better quality:
 
 proc_ - Monitor a process
 munin_plugins - Count how many plugins are linked up
 md0_sync - Sync/recover progress of a md0
 md0_sync_speed - Sync/recover SPEED of a md0
 
-Read first-quality:
+"Read first"-quality:
 
 df_abs - Slight modifications to the original, including a "Total Capacity"
 scsi_media_scan - Display scsi media scan progress
