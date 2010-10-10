@@ -11,4 +11,4 @@ exit 0;
 fi
 
 echo -n 'urxvt.value '
-pgrep urxvt | wc -l
+pgrep -f '(urxvt|x-terminal-emulator)' | wc -l
