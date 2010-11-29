@@ -1,0 +1,17 @@
+#!/bin/bash
+
+user=kristian
+keyname=foos
+
+if [ "$1" == "config" ]; then
+cat <<_FOO_
+graph_title Foo-files
+graph_category funkytown
+${keyname}.label Number of files matching foo{,.*}
+${keyname}.type GAUGE
+_FOO_
+exit 0;
+fi
+
+echo -n "${keyname}.value "
+find /home/${user} -name 'foo' -or -name 'foo.*' | wc -l
