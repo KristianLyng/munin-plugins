@@ -21,6 +21,14 @@
 # suppose it works with the 3311 too, possibly more. It uses 192.168.0.60
 # by default - because I'm lazy.
 
+### Magic markers
+# #%# family=manual
+# #%# capabilities=
+#
+# Even if we _could_ do autoconf on ENVIRON["ip"], it's hazardous as you
+# have little control over timeouts and risk hanging around annoying the
+# user.
+
 BEGIN {
 	if (ARGV[1] == "config") {
 		print "graph_title Denon AV4311 Volume"
@@ -29,8 +37,10 @@ BEGIN {
 		print "volume.type GAUGE"
 		exit 0
 	}
-	if (ip == "") {
+	if (ENVIRON["ip"] == "") {
 		ip="192.168.0.60"
+	} else {
+		ip=ENVIRON["ip"]
 	}
 	Service="/inet/tcp/0/" ip "/23"
 
