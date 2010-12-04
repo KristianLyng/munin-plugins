@@ -31,7 +31,7 @@
 
 BEGIN {
 	if (ARGV[1] == "config") {
-		print "graph_title Denon AV4311 Volume"
+		print "graph_title Denon AVR-4311 Volume"
 		print "graph_category funkytown"
 		print "volume.label Volume"
 		print "volume.type GAUGE"
@@ -44,7 +44,7 @@ BEGIN {
 	}
 	Service="/inet/tcp/0/" ip "/23"
 
-	# The AV4311 uses just a \r as line/record separator (annoying as
+	# The AVR-4311 uses just a \r as line/record separator (annoying as
 	# heck).
 	RS="\r"
 
