@@ -1,0 +1,45 @@
+#!/usr/bin/gawk -f
+
+BEGIN {
+	if (ARGV[1] == "config") {
+		print "graph_title Denon AV4311 Volume"
+		print "graph_category funkytown"
+		print "volume.label Volume"
+		print "volume.type GAUGE"
+		exit(0);
+	}
+	if (ip == "") {
+		ip="192.168.0.60"
+	}
+	Service="/inet/tcp/0/" ip "/23";
+
+	# The AV4311 uses just a \r as line/record separator (annoying as
+	# heck).
+	RS="\r"
+
+	# MV? asks for volume. Returned in MVXXZ - the z is optional
+	print "MV?\r" |&Service
+	Service |& getline; 
+	close(Service);
+	gsub("^MV","");
+
+	# Debug:	print $0;
+	
+	# 445 == 44.5. 44 = 44. So only divide by ten if more than 2
+	# characters were returned. Note that it also returns 005 for 0.5
+	if (length() >2) {
+		n=$0/10;
+	} else {
+		n=$0; 
+	};
+
+	# 99 is "0" and 99.5 is "0.5" (somewhat audible). I shift
+	# everything by 1 because I prefer my lists to start at 0, not
+	# -1....
+	if (n==99 || n == 99.5) {
+		n-=99
+	} else {
+		n+=1;
+	}
+	printf "%0.1f\n",n; 
+}
