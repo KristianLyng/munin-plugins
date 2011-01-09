@@ -14,4 +14,4 @@ exit 0;
 fi
 
 echo -n "${keyname}.value "
-find /home/${user} -name 'foo' -or -name 'foo.*' | wc -l
+find /home/${user} -name 'foo' -or -name 'foo[0-9]*' -or -name 'fooba*' -or -name 'foo.*' | wc -l
