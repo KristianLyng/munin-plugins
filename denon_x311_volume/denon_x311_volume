@@ -38,7 +38,7 @@ BEGIN {
 		exit 0
 	}
 	if (ENVIRON["ip"] == "") {
-		ip="192.168.0.60"
+		ip="denon.kristian.int"
 	} else {
 		ip=ENVIRON["ip"]
 	}
