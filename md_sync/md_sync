@@ -53,5 +53,8 @@ __EOF__
 fi
 
 for target in $targets; do
-	cat /sys/devices/virtual/block/$target/md/sync_completed | awk -v tar=$target '{if ($1 != "none") { print tar ".value " 100*$1/$3 } else { print tar ".value 0"}}'
+	awk -v tar=$target '
+		$1 != "none" { print tar ".value " 100*$1/$3 }
+		$1 == "none" { print tar ".value 0"}' \
+		/sys/devices/virtual/block/$target/md/sync_completed
 done
